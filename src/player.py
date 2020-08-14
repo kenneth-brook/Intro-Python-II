@@ -1,19 +1,21 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
-from room import Room
+from item import Item
 
 
-class Player():
-    def __init__(self, name, current_room):
+class Player:
+    def __init__(self, name, location):
+        self.location = location
         self.name = name
-        self.current_room = current_room
-        self.item = []
+        self.inventory = []
 
-    def move(self, direction):
-        '''This function controls player movement'''
-        new_room = self.current_room.get_direction(direction)
-        if new_room is not None:
-            self.current_room = new_room
-            print(self.current_room)
-        else:
-            print("You cannot move in this direction.")
+    def add_item(self, item):
+        item.on_take()
+        self.inventory.append(item)
+
+    def drop_item(self, stri):
+        for a in self.inventory:
+            if a.name == stri:
+                self.inventory.remove(a)
+                a.on_drop()
+                return a
